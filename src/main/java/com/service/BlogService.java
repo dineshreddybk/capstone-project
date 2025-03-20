@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.dto.BlogDto;
 import com.entity.BlogEntity;
+import com.exception.CustomException;
 import com.exception.ResourceNotFoundException;
 import com.repository.BlogRepository;
 
@@ -25,6 +26,9 @@ public class BlogService {
 	    }
 	    
 	public BlogDto getBlogById(Long id) {
+		if(id<=0) {
+			throw new CustomException("Id should be greater than zero");
+		}
 	    BlogEntity blog = blogRepository.findById(id)
 	            .orElseThrow(() -> new ResourceNotFoundException("Blog with ID " + id + " not found"));
 	    return new BlogDto(blog.getId(), blog.getTitle(), blog.getContent());
